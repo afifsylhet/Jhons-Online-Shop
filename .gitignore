@@ -1,2 +1,3 @@
 node_modules/
 serverSide/config/config.env/
+client_side/node_modules/
