@@ -1,24 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./css/Home.css";
 import { faComputerMouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Product from "./Product.js";
 import { Container, Row } from "react-bootstrap";
 import MetaData from "./MetaData";
-
-const product = {
-  name: "Product 1",
-  img: [
-    "https://media.gettyimages.com/id/1179420343/photo/smiling-man-outdoors-in-the-city.jpg?s=612x612&w=gi&k=20&c=n663L5A4XlwcUvNpX_eu4ur1sMmrD6dt_c1mbWjrLXk=",
-  ],
-  price: 1200,
-  _id: "kajskjdf45sfs",
-};
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../featuers/slice/productSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const { isLoading, isError, error } = useSelector((state) => state.product);
+
+  const { products } = useSelector((state) => state.product.products);
+
+  let content = null;
+
+  if (isLoading) {
+    content = <p>LOADING...</p>;
+  }
+
+  if (!isLoading && isError) {
+    content = <p style={{ color: "red" }}>There was an error occured</p>;
+  }
+
+  if (!isLoading && !isError && products?.length === 0)
+    <p style={{ color: "red" }}>No Product Found</p>;
+
+  if (!isLoading && !isError && products?.length > 0) {
+    content = products.map((product) => (
+      <Product key={product._id} product={product} />
+    ));
+  }
+
   return (
     <>
-    <MetaData title="Jhons Online Shop"/>
+      <MetaData title="Jhons Online Shop" />
       <div className="banner">
         <p className="fs-bold my-2 fs-3"> Wellcome to Jhons Online Shop</p>
         <h1 className="fs-bold py-4">FIND AMAZING PRODUCT BELLOW</h1>
@@ -39,17 +61,9 @@ const Home = () => {
       <div id="scrollId">
         <Container fluid>
           <Row xs={1} sm={2} md={2} lg={4}>
-          <Product product={product} />
-          <Product product={product} />
-          <Product product={product} />
-          <Product product={product} />
-          <Product product={product} />
-          <Product product={product} />
-          <Product product={product} />
-          <Product product={product} />
-
+            {content}
           </Row>
-          </Container>
+        </Container>
       </div>
     </>
   );
