@@ -12,7 +12,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts({ keyword: "", currentPage: 1 }));
   }, [dispatch]);
 
   const { isLoading, isError, error } = useSelector((state) => state.product);
@@ -26,7 +26,7 @@ const Home = () => {
   }
 
   if (!isLoading && isError) {
-    content = <p style={{ color: "red" }}>There was an error occured</p>;
+    content = <p style={{ color: "red" }}>{error}</p>;
   }
 
   if (!isLoading && !isError && products?.length === 0)

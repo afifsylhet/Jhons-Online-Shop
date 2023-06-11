@@ -20,7 +20,7 @@ const Product = ({ product }) => {
 
   return (
     <Col>
-    <Link style={{ textDecoration: "none" }} to={product._id}>
+    <Link style={{ textDecoration: "none" }} to={`/product/${product._id}`}>
               <Card className="mb-4">
                 <Card.Img src={product.images[0].url} alt={product.name} />
                 <Card.Body className="">

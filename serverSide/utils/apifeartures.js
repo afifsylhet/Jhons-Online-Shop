@@ -29,11 +29,12 @@ class ApiFeatures {
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
   }
-  pagination(resueltPerPage) {
-    const currentPage =  Number(this.queryStr.page) ||1;
-    const skip = resueltPerPage *(currentPage - 1);
-    this.query = this.query.limit(resueltPerPage).skip(skip);
-    return this
+  pagination(resultPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1;
+    const skip = resultPerPage * (currentPage - 1);
+  
+    this.query = this.query.skip(skip).limit(resultPerPage);
+    return this;
   }
 }
 
