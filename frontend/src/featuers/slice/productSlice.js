@@ -12,6 +12,7 @@ const initialState = {
 };
 
 // Async Thunks
+// Get Product
 
 export const fetchProducts = createAsyncThunk(
   "slice/fetchProducts",
@@ -21,6 +22,7 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+// Get Product Details
 
 export const fetchProductDetails = createAsyncThunk(
   "slice/fetchProductDetails",

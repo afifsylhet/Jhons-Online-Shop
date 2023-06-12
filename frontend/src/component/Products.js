@@ -26,8 +26,6 @@ const Products = () => {
 
   let price = value;
 
-  console.log(catagory);
-
   const renderThumb = (props, state) => {
     const { valueNow } = state;
     return <div {...props}>{valueNow}</div>;

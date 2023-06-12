@@ -57,7 +57,7 @@ const Header = () => {
               <Nav.Link  as={Link} to="/search"  className="text-white">
                 <FontAwesomeIcon icon={faSearch} />
               </Nav.Link>
-              <Nav.Link  as={Link} to="/Login"  className="text-white">
+              <Nav.Link  as={Link} to="/login"  className="text-white">
                 <FontAwesomeIcon icon={faUser} />
               </Nav.Link>
               <Nav.Link  as={Link} to="/cart"  className="text-white">
