@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import MetaData from "./layout/MetaData";
+import MetaData from "./layout/home/MetaData";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");

@@ -10,7 +10,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearError, userLogin } from "../../../featuers/slice/userSlice";
+import {
+  clearError,
+  userLogin,
+  userRegistration,
+} from "../../../featuers/slice/userSlice";
 
 const LoginSignUp = () => {
   const [toggle, setToggle] = useState(false);
@@ -19,61 +23,61 @@ const LoginSignUp = () => {
   const [password, setPassword] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
-
-
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-
-  const {user, isLoading, isAuthenticated, ownError } = useSelector(
+  const { isLoading, isAuthenticated, ownError, rgisterSuccess } = useSelector(
     (state) => state.user
   );
 
-
   useEffect(() => {
-      if(isAuthenticated){
-      navigate("/account")
+    if (isAuthenticated) {
+      navigate("/account");
     }
-    if (ownError) {
+    if (ownError && ownError !== "Please login to access the resource") {
       alert(ownError);
-      dispatch(clearError())
+      dispatch(clearError());
     }
-  }, [isAuthenticated, navigate, ownError]);
+    if (rgisterSuccess) {
+      alert("Congratulations!!! Your account has been successfully created.");
+    }
+  }, [isAuthenticated, navigate, ownError, rgisterSuccess]);
+
+  // On submit handeler for register user
 
   const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-    // Create the object for register data
-    const registerData = {
-      name,
-      email,
-      password,
-      avatar: selectedImage, // Store the selected image URL
-    };
+    const registerData = new FormData();
+    registerData.append("name", name);
+    registerData.append("email", email);
+    registerData.append("password", password);
+    registerData.append("avatar", selectedImage);
 
     // Perform registration logic here
-    console.log("Register Data:", registerData);
+    dispatch(userRegistration(registerData));
 
     // Reset form fields
     setName("");
     setEmail("");
     setPassword("");
-    setSelectedImage(null); // Reset the selected image
+    setSelectedImage(null);
   };
 
+  // On submit handeler for login user
+
   const handleLoginSubmit = (e) => {
-    e.preventDefault();
     dispatch(userLogin({ email, password }));
     // Reset form fields
     setEmail("");
     setPassword("");
+    alert("Your loged out successfully. Hope see you soon");
+
   };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.onload = () => {
+    reader.onloadend = () => {
       setSelectedImage(reader.result);
     };
 
@@ -81,7 +85,6 @@ const LoginSignUp = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const borderStyle = "border-bottom border-2 border-secondary";
 
   return (
@@ -99,6 +102,7 @@ const LoginSignUp = () => {
               className={`px-3 pb-1 fs-4 fw-semibold text-secondary ${
                 !toggle && borderStyle
               }`}
+              style={{ cursor: "pointer" }}
               onClick={() => setToggle(false)}
             >
               Login
@@ -107,6 +111,7 @@ const LoginSignUp = () => {
               className={`px-3 pb-1 fs-4 fw-semibold text-secondary ${
                 toggle && borderStyle
               }`}
+              style={{ cursor: "pointer" }}
               onClick={() => setToggle(true)}
             >
               Register

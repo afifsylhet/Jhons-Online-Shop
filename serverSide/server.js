@@ -1,6 +1,9 @@
 const app = require("./app");
 const dotenv = require("dotenv");
-const connectDatabase = require("./config/database")
+const cloudinary = require("cloudinary").v2;
+
+const connectDatabase = require("./config/database");
+
 
 // Handling Uncaught Error
 // This Error Handelar Should be top of the Server
@@ -12,6 +15,9 @@ process.on("uncaughtException", (err)=>{
 });
 
 
+
+
+
 //config
 dotenv.config({path:"serverSide/config/config.env"});
 
@@ -19,6 +25,14 @@ dotenv.config({path:"serverSide/config/config.env"});
 // connecting to database
 
 connectDatabase()
+
+//Must be after database connect set the cloudinary config
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 
 
@@ -36,3 +50,5 @@ process.on("unhandledRejection", (err)=>{
         process.exit(1)
     })
 })
+
+

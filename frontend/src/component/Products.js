@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Product from "./layout/Product";
+import Product from "./layout/home/Product";
 import Paginations from "./Paginations";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { fetchProducts } from "../featuers/slice/productSlice";
 import { useParams } from "react-router-dom";
 import ReactSlider from "react-slider";
 import "./ReactSlider.css";
-import MetaData from "./layout/MetaData";
+import MetaData from "./layout/home/MetaData";
 
 const categories = [
   "Laptop",

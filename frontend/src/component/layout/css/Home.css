@@ -6,6 +6,7 @@
     text-align: center;
     justify-content: center;
     color: white;
+    padding-top: 100px;
 }
 
 .banner::after{
@@ -13,9 +14,9 @@
     width: 100vw;
     height: 100vmin;
     background-color: #ffffff;
-    position:absolute;
-    top:10%;
+    position:relative;
+    top:0%;
     left: 0%;
-    clip-path:polygon(100% 65%, 0% 100%, 100% 100%);
+    clip-path:polygon(100% 30%, 0% 100%, 100% 100%);
     max-width: 100%;
 }

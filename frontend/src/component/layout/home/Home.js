@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import "./css/Home.css";
+import "../css/Home.css";
 import { faComputerMouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Product from "./Product.js";
 import { Container, Row } from "react-bootstrap";
-import MetaData from "./MetaData";
+import MetaData from "../home/MetaData";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../featuers/slice/productSlice";
+import { fetchProducts } from "../../../featuers/slice/productSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const Home = () => {
       <MetaData title="Jhons Online Shop" />
       <div className="banner">
         <p className="fs-bold my-2 fs-3"> Wellcome to Jhons Online Shop</p>
-        <h1 className="fs-bold py-4">FIND AMAZING PRODUCT BELLOW</h1>
+        <h1 className="fs-bold py-4">FIND AMAZING PRODUCT BELOW</h1>
         <a className="fs-bold my-2" href="#scrollId">
           <button className="btn btn-secondary">
             Scroll <FontAwesomeIcon className="ms-2" icon={faComputerMouse} />

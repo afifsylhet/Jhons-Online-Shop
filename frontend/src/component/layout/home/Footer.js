@@ -1,6 +1,6 @@
 import React from "react";
-import playStoreDownloadBage from "../../images/playStoreDownloadBage.png";
-import appStoreDownloadBage from "../../images/appStoreDownloadBage.png";
+import playStoreDownloadBage from "../../../images/playStoreDownloadBage.png";
+import appStoreDownloadBage from "../../../images/appStoreDownloadBage.png";
 
 
 const Footer = () => {

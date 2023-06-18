@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Col, Image, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductDetails } from "../../featuers/slice/productSlice";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
-import Review from "../Review";
+import Review from "../../Review";
 import MetaData from "./MetaData";
+import { fetchProductDetails } from "../../../featuers/slice/productSlice";
 
 const ProductDetails = ({ params }) => {
   const { id } = useParams();
