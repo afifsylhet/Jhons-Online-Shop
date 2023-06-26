@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Image, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -6,8 +6,12 @@ import ReactStars from "react-rating-stars-component";
 import Review from "../../Review";
 import MetaData from "./MetaData";
 import { fetchProductDetails } from "../../../featuers/slice/productSlice";
+import { getProductDetailsForCart } from "../../../featuers/slice/cartSlice";
 
 const ProductDetails = ({ params }) => {
+
+  let [quantity, setQuantity] = useState(1)
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const { product, isLoading } = useSelector((state) => state.product);
@@ -27,6 +31,23 @@ const ProductDetails = ({ params }) => {
     value: newProduct?.ratings,
     isHalf: true,
   };
+
+const increaseQuantity = () =>{
+  if(quantity >= newProduct.stock){
+    return
+  }
+  setQuantity(quantity +1);
+}
+const decreaseQuantity = () =>{
+  if(quantity <= 1){
+    return
+  }
+  setQuantity(quantity -1);
+}
+
+const cartHandler = ()=>{
+  dispatch(getProductDetailsForCart({quantity, id}))
+}
 
   return (
     <>
@@ -64,18 +85,28 @@ const ProductDetails = ({ params }) => {
                 </p>
                 <p className="fs-3">$ {newProduct?.price}</p>
                 <div>
-                  <button className="bg-success border-secondary text-white fw-bold">
+                  <button 
+                  className="bg-success border-secondary text-white fw-bold"
+                  onClick={increaseQuantity}
+                  >
                     +
                   </button>
                   <input
-                    value={1}
+                    value={quantity}
                     style={{ width: "45px" }}
                     className="broder-secondary ps-3"
+                    readOnly
                   />
-                  <button className="bg-success border-secondary  text-white fw-bold">
+                  <button
+                   className="bg-success border-secondary  text-white fw-bold"
+                   onClick={decreaseQuantity}
+                   >
                     -
                   </button>
-                  <button className="bg-secondary rounded ms-3 text-white fw-semibold">
+                  <button 
+                  className="bg-secondary rounded ms-3 text-white fw-semibold"
+                  onClick={cartHandler}
+                  >
                     Add to Cart
                   </button>
                 </div>

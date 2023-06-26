@@ -1,5 +1,16 @@
-const keyword = " Hello World "
+  // On submit handeler for update user
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
 
-const newKeyword = keyword.trim()
+    const updateData = new FormData();
+    updateData.append("name", name);
+    updateData.append("email", email);
+    updateData.append("avatar", selectedImage);
 
-console.log(newKeyword)
+    try {
+      await dispatch(updateUserProfile(updateData)).unwrap();
+      dispatch(loadUserDetails());
+    } catch (error) {
+      console.log(error);
+    }
+  };

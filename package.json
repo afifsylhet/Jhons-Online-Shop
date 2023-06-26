@@ -25,6 +25,7 @@
     "nodemailer": "^6.9.2",
     "nodemon": "^2.0.22",
     "overlay-navbar": "^1.2.3",
+    "stripe": "^12.10.0",
     "uninstall": "^0.0.0",
     "validator": "^13.9.0"
   }

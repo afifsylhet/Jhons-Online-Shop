@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearError, updateProfileReset, updateUserProfile,} from "../../../featuers/slice/profileSlice";
+  clearError,
+  updateProfileReset,
+  updateUserProfile,
+} from "../../../featuers/slice/profileSlice";
 import { loadUserDetails } from "../../../featuers/slice/userSlice";
 
 const UpdateProfile = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user} = useSelector(
-    (state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
-  const { error, isUpdated, isLoading, ownError, } = useSelector(
-    (state) => state.profile);
+  const { error, isUpdated, isLoading, ownError } = useSelector(
+    (state) => state.profile
+  );
 
   useEffect(() => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
-      setSelectedImage(user.avatar.url);
+      setSelectedImage("");
     }
     if (ownError) {
       alert(ownError);
@@ -39,27 +39,24 @@ const UpdateProfile = () => {
     }
     if (isUpdated) {
       alert("Congratulations!!! Your account has been successfully updated.");
-      dispatch(loadUserDetails())
+      dispatch(loadUserDetails());
       navigate("/account");
       dispatch(updateProfileReset());
-      console.log(isUpdated)
     }
-  }, [user, ownError, isUpdated, user.avatar.url]);
+  }, [user, ownError, isUpdated, dispatch, navigate]);
 
-  console.log(selectedImage)
+  // On submit handler for update user
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
 
-  // On submit handeler for update user
-
-  const handleUpdateSubmit = (e) => {
     const updateData = new FormData();
     updateData.append("name", name);
     updateData.append("email", email);
-    updateData.append("avatar", selectedImage);
-  
-    // Perform update logic here
+    if (selectedImage) {
+      updateData.append("avatar", selectedImage);
+    }
     dispatch(updateUserProfile(updateData));
   };
-  
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -129,8 +126,10 @@ const UpdateProfile = () => {
                 <div className="input-group d-flex align-items-center fs-2">
                   <div className="input-group-prepend">
                     <span className="pe-2">
-                      <Image src={user?.avatar?.url} alt="user.name" 
-                      style={{height: "50px"}}
+                      <Image
+                        src={user?.avatar?.url}
+                        alt={user?.name}
+                        style={{ height: "50px" }}
                       />
                     </span>
                   </div>
@@ -151,7 +150,12 @@ const UpdateProfile = () => {
                 />
               )} */}
               {/* Register Button */}
-              <Button variant="secondary" type="submit" className="w-100 mb-2">
+              <Button
+                variant="secondary"
+                type="submit"
+                className="w-100 mb-2"
+                disabled={isUpdated}
+              >
                 Update
               </Button>
             </Form>

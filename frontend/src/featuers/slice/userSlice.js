@@ -80,6 +80,9 @@ const userSlice = createSlice({
     clearError: (state) => {
       state.error = "";
       state.ownError = null;
+      state.rgisterSuccess= false;
+      state.isAuthenticated = false;
+      state.isAuthenticated= false;
     },
   },
   extraReducers: (builder) => {

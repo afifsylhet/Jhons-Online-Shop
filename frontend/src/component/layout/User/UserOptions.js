@@ -5,6 +5,7 @@ import {
   faUser,
   faClipboardList,
   faSignOutAlt,
+  faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 import { Image, OverlayTrigger, Tooltip } from "react-bootstrap";
 import userProfile from "../../../images/userProfile.png";
@@ -16,7 +17,8 @@ const UserOptions = () => {
   const dispatch= useDispatch();
   const navigate = useNavigate();
 
-const{user} = useSelector(state => state.user)
+const{user} = useSelector(state => state.user);
+const{cartItems} = useSelector(state => state.cart);
 
   const dashbordFunc = () => {
     navigate("/dashboard");
@@ -30,8 +32,13 @@ const{user} = useSelector(state => state.user)
     navigate("/account");
   };
 
+  const shoppingCart = () => {
+    navigate("/cart");
+  };
+
   const logoutFunc = () => {
     dispatch(userLogout());
+    alert("You have loged out. Hope see you soon")
   };
 
   const options = [
@@ -59,6 +66,20 @@ const{user} = useSelector(state => state.user)
       name: "Profile",
       func: profileFunc,
     },
+
+    {
+      component: (
+        <FontAwesomeIcon
+          icon={  faShoppingCart}
+          className={`fs-2 mx-3 text-secondary ${cartItems.length && "text-warning"}`}
+          onClick={shoppingCart}
+          style={{ cursor: "pointer" }}
+        />
+      ),
+      name: "Cart",
+      func: profileFunc,
+    },
+
     {
       component: (
         <FontAwesomeIcon

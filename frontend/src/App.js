@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WebFont from "webfontloader";
@@ -16,10 +16,24 @@ import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./component/Route/ProtectedRoute";
 import MyProfile from "./component/layout/User/MyProfile";
 import UpdateProfile from "./component/layout/User/UpdateProfile";
+import UpdatePassword from "./component/layout/User/UpdatePassword";
+import ForgetPassword from "./component/layout/User/ForgetPassword";
+import ResetPassword from "./component/layout/User/ResetPassword";
+import Cart from "./component/layout/cart/Cart";
+import Shipping from "./component/layout/cart/Shipping";
+import ConfirmOrder from "./component/layout/cart/ConfirmOrder";
+import axios from "./utils/axios";
+
+// Payment
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Payment from "./component/layout/cart/Payment.js";
 
 function App() {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.user);
+
+  const [stripeApiKey, setStripeApiKey] = useState("");
 
   useEffect(() => {
     WebFont.load({
@@ -27,8 +41,24 @@ function App() {
         families: ["Roboto", "Chilanka", "Droid Sans"],
       },
     });
-    dispatch(loadUserDetails());
+    dispatch(loadUserDetails()); // Dispatch the action to load user details
+
+    async function getStripApiKey() {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true, // Include cookies in the request
+      };
+      const { data } = await axios.get("/stripeapi", config);
+
+      setStripeApiKey(data.stripeApiKey);
+    }
+
+    getStripApiKey();
   }, [dispatch]);
+
+  console.log(stripeApiKey);
 
   return (
     <Router>
@@ -44,12 +74,60 @@ function App() {
         <Route path="/login" element={<LoginSignUp />} />
         <Route
           path="/account"
-          element={<ProtectedRoute><MyProfile/></ProtectedRoute>}
+          element={
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/me/update"
-          element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>}
+          element={
+            <ProtectedRoute>
+              <UpdateProfile />
+            </ProtectedRoute>
+          }
         />
+        <Route
+          path="/password/update"
+          element={
+            <ProtectedRoute>
+              <UpdatePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/password/forget" element={<ForgetPassword />} />
+        <Route path="/password/reset/:token" element={<ResetPassword />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/shipping"
+          element={
+            <ProtectedRoute>
+              <Shipping />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/order/confirm"
+          element={
+            <ProtectedRoute>
+              <ConfirmOrder />
+            </ProtectedRoute>
+          }
+        />
+
+        {stripeApiKey && (
+            <Route
+              path="/process/payment"
+              element={
+                <Elements stripe={loadStripe(stripeApiKey)}>
+                  <ProtectedRoute>
+                    <Payment />
+                  </ProtectedRoute>
+                </Elements>
+              }
+            />
+        )}
       </Routes>
       <Footer />
     </Router>

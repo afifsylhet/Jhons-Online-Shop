@@ -7,11 +7,12 @@ import {
   faUser,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearError,
+  loadUserDetails,
   userLogin,
   userRegistration,
 } from "../../../featuers/slice/userSlice";
@@ -25,6 +26,10 @@ const LoginSignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirect = location.search ? location.search.split('=')[1] : '/account';
+
 
   const { isLoading, isAuthenticated, ownError, rgisterSuccess } = useSelector(
     (state) => state.user
@@ -32,7 +37,10 @@ const LoginSignUp = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/account");
+      alert("Login Success!");
+      navigate(redirect);
+      dispatch(loadUserDetails())
+      dispatch(clearError())
     }
     if (ownError && ownError !== "Please login to access the resource") {
       alert(ownError);
@@ -40,12 +48,16 @@ const LoginSignUp = () => {
     }
     if (rgisterSuccess) {
       alert("Congratulations!!! Your account has been successfully created.");
+      navigate("/account");
+      dispatch(loadUserDetails())
+      dispatch(clearError())
     }
   }, [isAuthenticated, navigate, ownError, rgisterSuccess]);
 
   // On submit handeler for register user
 
   const handleRegisterSubmit = (e) => {
+    e.preventDefault();
     const registerData = new FormData();
     registerData.append("name", name);
     registerData.append("email", email);
@@ -65,12 +77,11 @@ const LoginSignUp = () => {
   // On submit handeler for login user
 
   const handleLoginSubmit = (e) => {
+    e.preventDefault();
     dispatch(userLogin({ email, password }));
     // Reset form fields
     setEmail("");
     setPassword("");
-    alert("Your loged out successfully. Hope see you soon");
-
   };
 
   const handleImageUpload = (event) => {
