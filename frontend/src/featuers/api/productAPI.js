@@ -16,7 +16,11 @@ export const getProducts = async (keyword ="", currentPage=1, price =[0, 6000], 
   };
 
   export const getProductDetails = async (id) => {
-    const response = await axios.get(`/product/${id}`);
+
+    const config = {
+          withCredentials: true, // Include cookies in the request
+    };
+    const response = await axios.get(`/product/${id}`, config);
   
     return response.data;
   };

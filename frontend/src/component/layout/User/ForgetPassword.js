@@ -74,7 +74,7 @@ const ForgetPassword = () => {
             </Form.Group>
             <br />
             <br />
-            {/* Change Password Button */}
+            {/* Password Change Button */}
             <Button variant="secondary" type="submit" className="w-100 mb-2">
               Send
             </Button>

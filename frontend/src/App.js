@@ -28,6 +28,8 @@ import axios from "./utils/axios";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Payment from "./component/layout/cart/Payment.js";
+import OrderSuccess from "./component/layout/cart/OrderSuccess";
+import MyOrders from "./component/layout/order/MyOrders";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,8 +59,6 @@ function App() {
 
     getStripApiKey();
   }, [dispatch]);
-
-  console.log(stripeApiKey);
 
   return (
     <Router>
@@ -98,7 +98,9 @@ function App() {
         />
         <Route path="/password/forget" element={<ForgetPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
+
         <Route path="/cart" element={<Cart />} />
+
         <Route
           path="/shipping"
           element={
@@ -117,17 +119,34 @@ function App() {
         />
 
         {stripeApiKey && (
-            <Route
-              path="/process/payment"
-              element={
-                <Elements stripe={loadStripe(stripeApiKey)}>
-                  <ProtectedRoute>
-                    <Payment />
-                  </ProtectedRoute>
-                </Elements>
-              }
-            />
+          <Route
+            path="/process/payment"
+            element={
+              <Elements stripe={loadStripe(stripeApiKey)}>
+                <ProtectedRoute>
+                  <Payment />
+                </ProtectedRoute>
+              </Elements>
+            }
+          />
         )}
+
+        <Route
+          path="/success"
+          element={
+            <ProtectedRoute>
+              <OrderSuccess />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       <Footer />
     </Router>

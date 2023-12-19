@@ -32,7 +32,7 @@ const Shipping = () => {
   const shippingSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(saveShippingDetails({ address, city, phoneNum, pinCode, state, country }));
-    navigate("/order/confirm");
+    navigate( "/order/confirm");
   };
 
   return (

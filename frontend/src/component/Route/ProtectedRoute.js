@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (isLoading) {
     navigate("/login");
-  } else if (!isAuthenticated) {
+  } else if (isAuthenticated === false) {
     navigate("/login");
   } else {
     return children;
